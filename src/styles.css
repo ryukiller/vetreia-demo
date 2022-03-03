@@ -19,10 +19,6 @@ body {
   justify-content: center;
 }
 
-#root {
-  width: 76ch;
-}
-
 .picker {
   width: 90px !important;
   height: 90px !important;
@@ -38,4 +34,12 @@ body {
   position: absolute;
   left: 0;
   top:0;
+}
+
+.fade {
+  animation: fade-in-keyframes 1s;
+}
+@keyframes fade-in-keyframes {
+  from {left: "0px"}
+  to {left: "100px"}
 }
