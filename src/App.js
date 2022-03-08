@@ -1,12 +1,45 @@
-import React, { Suspense, useRef, useState, useEffect } from "react"
-import { Canvas, useFrame } from "react-three-fiber"
-import { ContactShadows, Environment, useGLTF, OrbitControls } from "drei"
+  const THREE = require("three");
+  global.THREE = THREE;
+  import React, { Suspense, useRef, useState, useEffect } from "react"
+  import { Canvas, useFrame } from '@react-three/fiber'
+  import { ContactShadows, Environment, useGLTF, OrbitControls } from '@react-three/drei'
 import { HexColorPicker } from "react-colorful"
-import { proxy, useProxy } from "valtio"
 import Menu from "./components/drawer"
+import { proxy, useProxy } from "valtio"
+import {State} from "./components/State"
+
+const options = {
+  transmission: 1,
+  thickness: 1.2,
+  roughness: 0.6,
+};
+
+
+const GlassMaterial = new THREE.MeshPhysicalMaterial({
+  //transmission:1,
+  //thickness:0.4,
+  color: new THREE.Color('#fff').convertSRGBToLinear(),
+  //roughness: 0,
+  //clearcoat: .40,
+  //clearcoatRoughness: 0.2,
+    metalness: .9,
+    roughness: .05,
+    envMapIntensity: 0.29,
+    clearcoat: .51,
+    transparent: true,
+    // transmission: .95,
+    opacity: .25,
+    reflectivity: 0.2,
+    refractionRatio: 0.3985,
+    ior: 0.9,
+    side: THREE.BackSide,
+});
+
+
 
 // Using a Valtio state model to bridge reactivity between
 // the canvas and the dom, both can write to it and/or react to it.
+
 const state = proxy({
   current: null,
   items: {
@@ -14,27 +47,14 @@ const state = proxy({
   },
 })
 
-const statescale = proxy({
-  current: null,
-  props: {
-    transmission: .5,
-    roughness: 0.5,
-  },
-  scale: {
-    x: 1,
-    y: 1,
-    z: 1
-  },
-})
-
 function Vetreria() {
   const ref = useRef()
   const snap = useProxy(state)
-  const snapS = useProxy(statescale)
+  const snapS = useProxy(State)
   // Drei's useGLTF hook sets up draco automatically, that's how it differs from useLoader(GLTFLoader, url)
   // { nodes, materials } are extras that come from useLoader, these do not exist in threejs/GLTFLoader
   // nodes is a named collection of meshes, materials a named collection of materials
-  const { nodes, materials } = useGLTF("doccia3.glb")
+  const { nodes, materials } = useGLTF("br2.gltf")
 
   // Animate model
   useFrame((state) => {
@@ -62,73 +82,23 @@ function Vetreria() {
       onPointerOut={(e) => e.intersections.length === 0 && set(null)}
       onPointerMissed={() => (state.current = null)}
       onPointerDown={(e) => (e.stopPropagation(), (state.current = e.object.material.name))}>
-      <mesh scale={[snapS.scale.x,snapS.scale.y,snapS.scale.z]} geometry={nodes.door_1.geometry} material={nodes.cerniere1.material}  />
-      <mesh scale={[snapS.scale.x,snapS.scale.y,snapS.scale.z]} geometry={nodes.door_2.geometry} material={nodes.cerniere1.material} />
-      <mesh
-        geometry={nodes.pomello.geometry}
-        material={materials.pomello}
-        position={[0.24, 0.95, 0]}
-        rotation={[Math.PI / 2, 0, 0]}
-        scale={[0.01, 0.03, 0.01]}
-      />
-      <mesh
-        geometry={nodes.cerniere1.geometry}
-        material={nodes.cerniere1.material}
-        position={[-0.29, 0.42, 0]}
-        scale={[1, 1, 0.71]}
-      />
-      <mesh
-        geometry={nodes.cerniereadd.geometry}
-        material={nodes.cerniereadd.material}
-        position={[-0.29, 1.05, 0]}
-        scale={[1, 1, 0.71]}
-      />
-      <mesh
-        geometry={nodes.cerniere2.geometry}
-        material={nodes.cerniere2.material}
-        position={[-0.29, 1.6, 0]}
-        scale={[1, 1, 0.71]}
-      />
-      <group position={[0.31, 0, -0.2]} scale={[1, 1, 0.64]}>
-        <mesh geometry={nodes.panel1_1.geometry} material={nodes.panel1_1.material} />
-        <mesh geometry={nodes.panel1_2.geometry} material={nodes.panel1_2.material} />
+            <group position={[-1.35, 0.01, -0.97]}>
+        <mesh geometry={nodes.doorm.geometry} material={GlassMaterial} scale={[State.scale["x"],State.scale["y"],State.scale["z"]]} />
+        <mesh geometry={nodes.doorm_1.geometry} material={GlassMaterial} />
+        <mesh geometry={nodes.cerniere.geometry} material={nodes.cerniere.material} position={[1.35, -0.01, 0.97]} />
+        <mesh geometry={nodes.frame.geometry} material={nodes.frame.material} position={[1.35, -0.01, 0.97]} />
+        <group position={[1.35, -0.01, 0.97]}>
+          <mesh geometry={nodes.panelm.geometry} material={GlassMaterial} />
+          <mesh geometry={nodes.panelm_1.geometry} material={GlassMaterial} />
+        </group>
+        <mesh geometry={nodes.pomello.geometry} material={nodes.pomello.material} position={[1.35, -0.01, 0.97]} />
+        <mesh geometry={nodes.walldoor.geometry} material={materials['Material.001']} />
       </group>
-      <group position={[0.31, 1, -0.2]} scale={[1, 0.5, 0.64]}>
-        <mesh geometry={nodes.panel2_1.geometry} material={nodes.panel2_1.material} />
-        <mesh geometry={nodes.panel2_2.geometry} material={nodes.panel2_2.material} />
-        <mesh geometry={nodes.panel2_3.geometry} material={nodes.panel2_3.material} />
-      </group>
-      <mesh
-        geometry={nodes.muras.geometry}
-        material={nodes.muras.material}
-        position={[0, 0, 0.58]}
-        scale={[1, 1.29, 1]}
-      />
-      <mesh geometry={nodes.muro1.geometry} material={nodes.muro1.material} position={[0, 0, 0.05]} />
-      <mesh
-        geometry={nodes.muro2.geometry}
-        material={nodes.muro2.material}
-        position={[0.35, 0, -1.4]}
-        rotation={[0, Math.PI / 2, 0]}
-      />
+      <mesh geometry={nodes.wall.geometry} material={materials.walls} scale={[1.88, 1.29, 1.88]} />
+      <mesh geometry={nodes.floor.geometry} material={materials.floor} scale={[1.88, 1.29, 1.88]} />
     </group>
   )
 }
-
-/*function Sphere() {
-  const geometry = new THREE.SphereGeometry( 15, 32, 16 );
-  const material = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
-  const sphere = new THREE.Mesh( geometry, material );
-
-  return(
-    <mesh 
-      geometry={geometry} 
-      material={material} 
-        />
-  )
-
-
-}*/
 
 function Picker() {
   const snap = useProxy(state)
@@ -140,55 +110,53 @@ function Picker() {
       <HexColorPicker className="picker" color={snap.items[snap.current]} onChange={(color) => (state.items[snap.current] = color)} />
       <div className="item">
       <label htmlFor="scaleX">Larghezza:</label>
-      <input id="scaleX" min="0.1" max="1"  step="0.001" type="range" className="scaleX" value={statescale.scale["x"]}
+      <input id="scaleX" min="0.1" max="1"  step="0.001" type="range" className="scaleX" value={State.scale["x"]}
       onChange={(event) => {
-        setRangeval(event.target.value) 
-        statescale.scale["x"] = rangeval
+        setRangeval(event.target.value)
+        State.scale["x"] = rangeval
       }}
       />
       </div>
       <div className="item">
       <label htmlFor="scaleY">Spessore:</label>
-      <input min="0.1" max="1"  step="0.001" type="range" className="scaleY" value={statescale.scale["y"]}
+      <input min="0.1" max="1"  step="0.001" type="range" className="scaleY" value={State.scale["y"]}
       onChange={(event) => {
-        setRangeval(event.target.value) 
-        statescale.scale["y"] = rangeval
+        setRangeval(event.target.value)
+        State.scale["y"] = rangeval
       }}
       />
       </div>
       <div className="item">
       <label htmlFor="scaleZ">Altezza:</label>
-      <input min="0.1" max="1"  step="0.001" type="range" className="scaleZ" value={statescale.scale["z"]}
+      <input min="0.1" max="1"  step="0.001" type="range" className="scaleZ" value={State.scale["z"]}
       onChange={(event) => {
-        setRangeval(event.target.value) 
-        statescale.scale["z"] = rangeval
+        setRangeval(event.target.value)
+        State.scale["z"] = rangeval
       }}
       />
       </div>
       <div className="item">
       <label htmlFor="transmission">Trasparenza:</label>
-      <input min="0.1" max="1"  step="0.001" type="range" className="transmission" value={statescale.props["transmission"]}
+      <input min="0.1" max="1"  step="0.001" type="range" className="transmission" value={State.props["transmission"]}
       onChange={(event) => {
-        setRangeval(event.target.value) 
-        statescale.props["transmission"] = rangeval
+        setRangeval(event.target.value)
+        State.props["transmission"] = rangeval
       }}
       />
       </div>
       <div className="item">
       <label htmlFor="roughness">Roughness:</label>
-      <input min="0.1" max="1"  step="0.001" type="range" className="roughness" value={statescale.props["roughness"]}
+      <input min="0.1" max="1"  step="0.001" type="range" className="roughness" value={State.props["roughness"]}
       onChange={(event) => {
-        setRangeval(event.target.value) 
-        statescale.props["roughness"] = rangeval
+        setRangeval(event.target.value)
+        State.props["roughness"] = rangeval
       }}
       />
       </div>
-      
+
     </div>
   )
 }
-
-console.log(Math.PI / 2);
 
 export default function App() {
   return (
@@ -198,10 +166,10 @@ export default function App() {
         <spotLight intensity={0.3} angle={0.1} penumbra={1} position={[5, 25, 20]} />
         <Suspense fallback={null}>
           <Vetreria />
-          <Environment files="royal_esplanade_1k.hdr" />
+          <Environment preset="apartment" />
           <ContactShadows rotation-x={Math.PI / 2} position={[0, -0.8, 0]} opacity={0.25} width={10} height={10} blur={2} far={1} />
         </Suspense>
-        <OrbitControls minAzimuthAngle={0.5} maxAzimuthAngle={Math.PI / 2-0.5} maxPolarAngle={Math.PI / 2-0.25} minPolarAngle={0.14}  target={[0,0,0]}  enableZoom={true} enablePan={false} />
+        <OrbitControls minDistance={.5} maxDistance={3} minAzimuthAngle={0.5} maxAzimuthAngle={Math.PI / 2-0.5} maxPolarAngle={Math.PI / 2-0.25} minPolarAngle={0.14}  target={[0,0,0]}  enableZoom={true} enablePan={true} />
       </Canvas>
       <Picker />
       <Menu />

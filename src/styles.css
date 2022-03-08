@@ -13,7 +13,7 @@ body,
 }
 
 body {
-  background: white;
+  background: rgb(80, 75, 75);
   font-family: "Inter var", sans-serif;
   display: flex;
   justify-content: center;
