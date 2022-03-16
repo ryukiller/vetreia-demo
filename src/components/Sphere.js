@@ -2,7 +2,7 @@ const THREE = require("three");
 global.THREE = THREE;
 import React, { Suspense, useRef, useState, useEffect } from "react"
 import { Canvas } from '@react-three/fiber'
-import { ContactShadows, Environment, OrbitControls } from '@react-three/drei'
+import { Environment } from '@react-three/drei'
 import {GlassMaterial} from './Materials'
 
 function Sphere(props) {

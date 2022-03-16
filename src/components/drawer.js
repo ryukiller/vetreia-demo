@@ -244,12 +244,14 @@ import {State} from "./State"
                 secondary={
                   <React.Fragment>
                    <Slider value={State.scale["x"]}
-                      step={0.1}
+                      step={0.001}
                       min={.8}
                       max={1.5}
                       onChange={(event) => {
                         setRangeval(event.target.value)
                         State.scale["x"] = rangeval
+                        State.panelPos["x"] = State.panelPos["x"] + Number(rangeval)
+                        console.log(State.panelPos["x"] * parseFloat(rangeval));
                       }}
                       defaultValue={State.scale["x"]} aria-label="Default" valueLabelDisplay="auto" sx={{ display: open ? "block" : "none" }} />
                   </React.Fragment>

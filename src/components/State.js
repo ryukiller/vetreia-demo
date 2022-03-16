@@ -12,4 +12,7 @@ export const State = proxy({
       y: 1,
       z: 1
     },
+    panelPos: {
+        x: 1.35
+    }
   })
