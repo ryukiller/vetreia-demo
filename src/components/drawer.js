@@ -1,4 +1,5 @@
 import React, { Suspense, useRef, useState, useEffect } from "react"
+import VetreriaBox from "./VetreriaBox";
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -17,6 +18,7 @@ import GradientIcon from '@mui/icons-material/Gradient';
 import { Sfera } from './Sphere';
 import { Close } from '@mui/icons-material';
 import Slider from '@mui/material/Slider';
+import TextField from '@mui/material/TextField';
 import HeightIcon from '@mui/icons-material/Height';
 import Checkbox from '@mui/material/Checkbox';
 import FormGroup from '@mui/material/FormGroup';
@@ -24,6 +26,19 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import AccountBalanceWalletSharpIcon from '@mui/icons-material/AccountBalanceWalletSharp';
 import {State} from "./State"
+
+
+/*<Slider value={State.scale["x"]}
+                      step={0.001}
+                      min={.8}
+                      max={1.5}
+                      onChange={(event) => {
+                        setRangeval(event.target.value)
+                        State.scale["x"] = rangeval
+                        State.panelPos["x"] = State.panelPos["x"] + Number(rangeval)
+                        
+                      }}
+                      defaultValue={State.scale["x"]} aria-label="Default" valueLabelDisplay="auto" sx={{ display: open ? "block" : "none" }} />*/
 
 
   const drawerWidth = 240;
@@ -106,9 +121,13 @@ import {State} from "./State"
     };
 
     const [rangeval, setRangeval] = useState(null);
+
+    const [position, setPosition] = useState({ x: 1, y: 1, z: 1 });
+    const { x, y, z } = position;
   
     
     return (
+      <>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <AppBar style={{background:"#000"}} position="fixed" open={open}>
@@ -132,7 +151,7 @@ import {State} from "./State"
               filter: 'invert(1)',
               borderRight: '2px solid #000', 
               display: open ? 'none' : 'block',}}
-              src={"/logo.png"}
+              src={"/logo2.png"}
               alt={"Vetreria Re"}
               loading="lazy"
             />
@@ -151,7 +170,7 @@ import {State} from "./State"
                 display: 'block',
                 marginRight:"8px"
               }}
-              src={"/logo.png"}
+              src={"/logo2.png"}
               alt={"Vetreria Re"}
               loading="lazy"
             />
@@ -205,15 +224,12 @@ import {State} from "./State"
                 </ListItemIcon>
                 <ListItemText primary={"Altezza"} secondary={
                   <React.Fragment>
-                    <Slider value={State.scale["y"]}
-                      step={0.1}
+                    <Slider value={position.y}
+                      step={0.001}
                       min={.8}
                       max={1.5}
-                      onChange={(event) => {
-                        setRangeval(event.target.value)
-                        State.scale["y"] = rangeval
-                      }}
-                      defaultValue={State.scale["y"]} aria-label="Default" valueLabelDisplay="auto" sx={{ display: open ? "block" : "none" }} />
+                      onChange={(e) => setPosition({ ...position, y: e.target.value })}
+                      defaultValue={position.y} aria-label="Default" valueLabelDisplay="auto" sx={{ display: open ? "block" : "none" }} />
                   </React.Fragment>
                 } 
                 sx={{ opacity: open ? 1 : 0 }} />
@@ -243,17 +259,12 @@ import {State} from "./State"
                 <ListItemText primary={"Larghezza"} 
                 secondary={
                   <React.Fragment>
-                   <Slider value={State.scale["x"]}
+                    <Slider value={position.x}
                       step={0.001}
                       min={.8}
                       max={1.5}
-                      onChange={(event) => {
-                        setRangeval(event.target.value)
-                        State.scale["x"] = rangeval
-                        State.panelPos["x"] = State.panelPos["x"] + Number(rangeval)
-                        console.log(State.panelPos["x"] * parseFloat(rangeval));
-                      }}
-                      defaultValue={State.scale["x"]} aria-label="Default" valueLabelDisplay="auto" sx={{ display: open ? "block" : "none" }} />
+                      onChange={(e) => setPosition({ ...position, x: e.target.value })}
+                      defaultValue={position.x} aria-label="Default" valueLabelDisplay="auto" sx={{ display: open ? "block" : "none" }} />
                   </React.Fragment>
                 } 
                 sx={{ opacity: open ? 1 : 0 }} />
@@ -301,10 +312,10 @@ import {State} from "./State"
 
           </List>
         </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          <DrawerHeader />
-        </Box>
+        
       </Box>
+      <VetreriaBox x={x} y={y} z={z} />
+      </>
     );
   }
 
