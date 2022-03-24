@@ -26,6 +26,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import AccountBalanceWalletSharpIcon from '@mui/icons-material/AccountBalanceWalletSharp';
 import {State} from "./State"
+import Chip from '@mui/material/Chip';
 
 
 /*<Slider value={State.scale["x"]}
@@ -122,8 +123,8 @@ import {State} from "./State"
 
     const [rangeval, setRangeval] = useState(null);
 
-    const [position, setPosition] = useState({ x: 1, y: 1, z: 1 });
-    const { x, y, z } = position;
+    const [position, setPosition] = useState({ x: 1, y: 1, z: 1, x2:1 });
+    const { x, y, z, x2 } = position;
   
     
     return (
@@ -203,7 +204,9 @@ import {State} from "./State"
                 sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>            
             {open ? (<Sfera />) :  ('')}
-            <Divider />
+            <Divider textAlign="left">
+              <Chip label="Porta" />
+            </Divider>
             <ListItemButton
                 onClick={handleDrawerOpen}
                 key={"Altezza"}
@@ -225,7 +228,7 @@ import {State} from "./State"
                 <ListItemText primary={"Altezza"} secondary={
                   <React.Fragment>
                     <Slider value={position.y}
-                      step={0.001}
+                      step={0.1}
                       min={.8}
                       max={1.5}
                       onChange={(e) => setPosition({ ...position, y: e.target.value })}
@@ -260,7 +263,7 @@ import {State} from "./State"
                 secondary={
                   <React.Fragment>
                     <Slider value={position.x}
-                      step={0.001}
+                      step={0.1}
                       min={.8}
                       max={1.5}
                       onChange={(e) => setPosition({ ...position, x: e.target.value })}
@@ -270,7 +273,75 @@ import {State} from "./State"
                 sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
             
+            <Divider textAlign="left">
+              <Chip label="Vetro laterale" />
+            </Divider>
+
+            <ListItemButton
+                onClick={handleDrawerOpen}
+                key={"Altezza"}
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <HeightIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Altezza"} secondary={
+                  <React.Fragment>
+                    <Slider value={position.y}
+                      step={0.1}
+                      min={.8}
+                      max={1.5}
+                      onChange={(e) => setPosition({ ...position, y: e.target.value })}
+                      defaultValue={position.y} aria-label="Default" valueLabelDisplay="auto" sx={{ display: open ? "block" : "none" }} />
+                  </React.Fragment>
+                } 
+                sx={{ opacity: open ? 1 : 0 }} />
+                
+            </ListItemButton>
+            
             <Divider />
+
+            <ListItemButton
+                onClick={handleDrawerOpen}
+                key={"larghezza"}
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <HeightIcon style={{transform:"rotate(90deg)"}} />
+                </ListItemIcon>
+                <ListItemText primary={"Larghezza"} 
+                secondary={
+                  <React.Fragment>
+                    <Slider value={position.x2}
+                      step={0.1}
+                      min={.8}
+                      max={1.5}
+                      onChange={(e) => setPosition({ ...position, x2: e.target.value })}
+                      defaultValue={position.x2} aria-label="Default" valueLabelDisplay="auto" sx={{ display: open ? "block" : "none" }} />
+                  </React.Fragment>
+                } 
+                sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
 
             <ListItemButton
                 onClick={handleDrawerOpen}
@@ -314,7 +385,7 @@ import {State} from "./State"
         </Drawer>
         
       </Box>
-      <VetreriaBox x={x} y={y} z={z} />
+      <VetreriaBox x={x} y={y} z={z} x2={x2} />
       </>
     );
   }
