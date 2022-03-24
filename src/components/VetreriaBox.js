@@ -23,6 +23,7 @@ const cerniere = useRef()
 const frame = useRef()
 const pomello = useRef()
 const walldoor = useRef()
+const pomelloin = useRef()
 
 // Drei's useGLTF hook sets up draco automatically, that's how it differs from useLoader(GLTFLoader, url)
 // { nodes, materials } are extras that come from useLoader, these do not exist in threejs/GLTFLoader
@@ -33,9 +34,11 @@ const vec = new THREE.Vector3(x, y, z);
 
 const panelmP = new THREE.Vector3(x * 1.35, -0.01, 0.97);
 
-const pomelloP = new THREE.Vector3(1.35 * x, -0.01, 0.97);
+const pomelloP = new THREE.Vector3(x * 1.35, -0.01, 0.97);
 
 const frameS = new THREE.Vector3(x * 1.35, -0.01, 0.97);
+
+const vecM = new THREE.Vector3(1, 1, 1);
 
 // Using the GLTFJSX output here to wire in app-state and hook up events
 useFrame(() => {
@@ -48,6 +51,8 @@ useFrame(() => {
   panelm.current.scale.lerp(vec, 0.1)
   panelm.current.position.lerp(panelmP, 0.1)
   pomello.current.position.lerp(pomelloP, 0.1)
+  pomello.current.scale.lerp(vec, 0.1)
+  pomelloin.current.scale.lerp(vecM, 0.1)
 
   //console.log(ref3.current.position.x)
   //console.log(ref3.matrixWorld);
@@ -79,7 +84,9 @@ return (
         <mesh geometry={nodes.panelm.geometry} material={GlassMaterial} />
         <mesh geometry={nodes.panelm_1.geometry} material={GlassMaterial} />
       </group>
-      <mesh ref={pomello} geometry={nodes.pomello.geometry} material={nodes.pomello.material} position={[1.35, -0.01, 0.97]} />
+      <group ref={pomello} position={[1.35, -0.01, 0.97]}>
+        <mesh ref={pomelloin} geometry={nodes.pomello.geometry} material={nodes.pomello.material} scale={[1,1,1]} />
+      </group>
       <mesh ref={walldoor} geometry={nodes.walldoor.geometry} material={materials['Material.001']} />
     </group>
     <mesh geometry={nodes.wall.geometry} material={materials.walls} scale={[1.88, 1.29, 1.88]} />
