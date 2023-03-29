@@ -1,4 +1,5 @@
 import React, { Suspense, useRef, useState, useEffect } from "react"
+import VetreriaBox from "./VetreriaBox.js";
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -17,6 +18,7 @@ import GradientIcon from '@mui/icons-material/Gradient';
 import { Sfera } from './Sphere';
 import { Close } from '@mui/icons-material';
 import Slider from '@mui/material/Slider';
+import TextField from '@mui/material/TextField';
 import HeightIcon from '@mui/icons-material/Height';
 import Checkbox from '@mui/material/Checkbox';
 import FormGroup from '@mui/material/FormGroup';
@@ -24,6 +26,21 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import AccountBalanceWalletSharpIcon from '@mui/icons-material/AccountBalanceWalletSharp';
 import {State} from "./State"
+import Chip from '@mui/material/Chip';
+import { ListItem } from "@mui/material";
+import CalculateIcon from '@mui/icons-material/Calculate';
+
+/*<Slider value={State.scale["x"]}
+                      step={0.001}
+                      min={.8}
+                      max={1.5}
+                      onChange={(event) => {
+                        setRangeval(event.target.value)
+                        State.scale["x"] = rangeval
+                        State.panelPos["x"] = State.panelPos["x"] + Number(rangeval)
+                        
+                      }}
+                      defaultValue={State.scale["x"]} aria-label="Default" valueLabelDisplay="auto" sx={{ display: open ? "block" : "none" }} />*/
 
 
   const drawerWidth = 240;
@@ -106,9 +123,32 @@ import {State} from "./State"
     };
 
     const [rangeval, setRangeval] = useState(null);
-  
+
+    const [position, setPosition] = useState({ x: 0.6, y: 2, z: 1, x2:1 });
+    const { x, y, z, x2 } = position;
+
+    function valueLabelFormat(value) {
+      let scaledValue = Number.isInteger(value) ? value.toString().replace('.', '')+"00" : value.toString().replace('0', '').replace('.', '')+"0";      
+      return `${scaledValue} CM`;
+    }
+
+    const [base, setBase] = useState(679);
+    const [nome, setNome] = useState("linea azzurra");
+    const [hinge, setHinge] = useState(false);
+    const [modelMaterials, setModelMaterials] = useState();
+
+    const handleSphereClick = (clickedMaterial) => {
+      setModelMaterials(clickedMaterial.material)
+      setBase(Number(clickedMaterial.base))
+      setNome(clickedMaterial.nome)
+    };
+    
+    const prezzo = base + (hinge ? 156 : 0) + ((x * 100) - 60) + ((y * 100) - 200)
+    
+    
     
     return (
+      <>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
         <AppBar style={{background:"#000"}} position="fixed" open={open}>
@@ -132,12 +172,13 @@ import {State} from "./State"
               filter: 'invert(1)',
               borderRight: '2px solid #000', 
               display: open ? 'none' : 'block',}}
-              src={"/logo.png"}
+              src={"/logo2.png"}
               alt={"Vetreria Re"}
               loading="lazy"
             />
             <Typography variant="h6" noWrap component="div">
-              Box Doccia 001
+              Box Doccia 001 - prezzo: € {prezzo}
+              
             </Typography>
           </Toolbar>
         </AppBar>
@@ -151,7 +192,7 @@ import {State} from "./State"
                 display: 'block',
                 marginRight:"8px"
               }}
-              src={"/logo.png"}
+              src={"/logo2.png"}
               alt={"Vetreria Re"}
               loading="lazy"
             />
@@ -183,8 +224,80 @@ import {State} from "./State"
                 <ListItemText primary={"Materiale del Vetro"} 
                 sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>            
-            {open ? (<Sfera />) :  ('')}
+            {open ? (<Sfera onClick={handleSphereClick} />) :  ('')}
+            <Divider textAlign="left">
+              <Chip label="Porta" sx={{ display: open ? "flex" : "none" }} />
+            </Divider>
+            <ListItemButton
+                onClick={handleDrawerOpen}
+                key={"Altezza2"}
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <HeightIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Altezza"} secondary={
+                  <React.Fragment>
+                    <Slider value={position.y}
+                      step={0.1}
+                      min={2}
+                      max={3}
+                      onChange={(e) => setPosition({ ...position, y: e.target.value })}
+                      defaultValue={position.y} aria-label="Default" valueLabelFormat={valueLabelFormat} valueLabelDisplay="auto" sx={{ display: open ? "block" : "none" }} />
+                  </React.Fragment>
+                } 
+                sx={{ opacity: open ? 1 : 0 }} />
+                
+            </ListItemButton>
+            
             <Divider />
+
+            <ListItemButton
+                onClick={handleDrawerOpen}
+                key={"larghezza2"}
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <HeightIcon style={{transform:"rotate(90deg)"}} />
+                </ListItemIcon>
+                <ListItemText primary={"Larghezza"} 
+                secondary={
+                  <React.Fragment>
+                    <Slider value={position.x}
+                      step={0.1}
+                      min={.6}
+                      max={2}
+                      onChange={(e) => setPosition({ ...position, x: e.target.value })}
+                      defaultValue={position.x} aria-label="Default" valueLabelFormat={valueLabelFormat} valueLabelDisplay="auto" sx={{ display: open ? "block" : "none" }} />
+                  </React.Fragment>
+                } 
+                sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+            
+            {/* <Divider textAlign="left">
+              <Chip label="Vetro laterale" sx={{ display: open ? "flex" : "none" }} />
+            </Divider>
+
             <ListItemButton
                 onClick={handleDrawerOpen}
                 key={"Altezza"}
@@ -205,15 +318,12 @@ import {State} from "./State"
                 </ListItemIcon>
                 <ListItemText primary={"Altezza"} secondary={
                   <React.Fragment>
-                    <Slider value={State.scale["y"]}
+                    <Slider value={position.y.toFixed(2)}
                       step={0.1}
-                      min={.8}
-                      max={1.5}
-                      onChange={(event) => {
-                        setRangeval(event.target.value)
-                        State.scale["y"] = rangeval
-                      }}
-                      defaultValue={State.scale["y"]} aria-label="Default" valueLabelDisplay="auto" sx={{ display: open ? "block" : "none" }} />
+                      min={2}
+                      max={3}
+                      onChange={(e) => setPosition({ ...position, y: e.target.value })}
+                      defaultValue={position.y.toFixed(2)} aria-label="Default" valueLabelFormat={valueLabelFormat} valueLabelDisplay="auto" sx={{ display: open ? "block" : "none" }} />
                   </React.Fragment>
                 } 
                 sx={{ opacity: open ? 1 : 0 }} />
@@ -243,23 +353,16 @@ import {State} from "./State"
                 <ListItemText primary={"Larghezza"} 
                 secondary={
                   <React.Fragment>
-                   <Slider value={State.scale["x"]}
-                      step={0.001}
-                      min={.8}
-                      max={1.5}
-                      onChange={(event) => {
-                        setRangeval(event.target.value)
-                        State.scale["x"] = rangeval
-                        State.panelPos["x"] = State.panelPos["x"] + Number(rangeval)
-                        console.log(State.panelPos["x"] * parseFloat(rangeval));
-                      }}
-                      defaultValue={State.scale["x"]} aria-label="Default" valueLabelDisplay="auto" sx={{ display: open ? "block" : "none" }} />
+                    <Slider value={position.x2}
+                      step={0.1}
+                      min={.6}
+                      max={2}
+                      onChange={(e) => setPosition({ ...position, x2: e.target.value })}
+                      defaultValue={position.x2} aria-label="Default" valueLabelFormat={valueLabelFormat} valueLabelDisplay="auto" sx={{ display: open ? "block" : "none" }} />
                   </React.Fragment>
                 } 
                 sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-            
-            <Divider />
+            </ListItemButton> */}
 
             <ListItemButton
                 onClick={handleDrawerOpen}
@@ -287,7 +390,8 @@ import {State} from "./State"
 
                       <FormControlLabel
                       component={'span'}
-                        value="1"
+                        value={hinge}
+                        onChange={() => setHinge(!hinge)}
                         control={<Checkbox />}
                         label="terza cerniera"
                         labelPlacement="end"
@@ -298,13 +402,192 @@ import {State} from "./State"
                 } 
                 sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
+            {open &&
+          <>
+            <Divider textAlign="left">
+              <Chip label="Riepilogo" sx={{ display: open ? "flex" : "none" }} />
+            </Divider>
+
+            
+
+          
+            <ListItem alignItems="flex-start">
+            <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <GradientIcon />
+              </ListItemIcon>
+            <ListItemText
+              primary="Materiale Vetro"
+              secondary={
+                <React.Fragment>
+                  <Typography
+                    sx={{ display: 'block' }}
+                    component="span"
+                    variant="body2"
+                    color="text.primary"
+                    textAlign="right"
+                    margin="10px 0"
+                  >
+                    {nome}
+                  </Typography>
+                  <Typography
+                    sx={{ display: 'block' }}
+                    component="span"
+                    variant="body2"
+                    color="text.primary"
+                    textAlign="right"
+                  >
+                    € {base}
+                  </Typography>
+                </React.Fragment>
+              }
+            />
+          </ListItem>
+
+          {y > 2 &&
+            <ListItem alignItems="flex-start">
+            <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <GradientIcon />
+              </ListItemIcon>
+            <ListItemText
+              primary="Altezza"
+              secondary={
+                <React.Fragment>
+                  <Typography
+                    sx={{ display: 'block' }}
+                    component="span"
+                    variant="body2"
+                    color="text.primary"
+                    textAlign="right"
+                  >
+                   + € {((y * 100) - 200).toFixed(2)}
+                  </Typography>
+                </React.Fragment>
+              }
+            />
+          </ListItem>}
+
+          {x > 0.6 &&
+            <ListItem alignItems="flex-start">
+            <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <GradientIcon />
+              </ListItemIcon>
+            <ListItemText
+              primary="Larghezza"
+              secondary={
+                <React.Fragment>
+                  <Typography
+                    sx={{ display: 'block' }}
+                    component="span"
+                    variant="body2"
+                    color="text.primary"
+                    textAlign="right"
+                  >
+                    + € {((x * 100) - 60).toFixed(2) }
+                  </Typography>
+                </React.Fragment>
+              }
+            />
+          </ListItem>}
+
+          {hinge &&
+            <ListItem alignItems="flex-start">
+            <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <AccountBalanceWalletSharpIcon style={{transform:"rotate(180deg)"}} />
+              </ListItemIcon>
+            <ListItemText
+              primary="Cerniera aggiuntiva"
+              secondary={
+                <React.Fragment>
+                  <Typography
+                    sx={{ display: 'block' }}
+                    component="span"
+                    variant="body2"
+                    color="text.primary"
+                    textAlign="right"
+                    margin="10px 0"
+                  >
+                    + € 156
+                  </Typography>
+                  <Typography
+                    sx={{ display: 'block' }}
+                    component="p"
+                    variant="body2"
+                    color="text.primary"
+                    whiteSpace="normal"
+                  >
+                    Cerniera piatta a scatto con regolazione angolo di chiusura, pomello inox finitura cromo lucido
+                  </Typography>
+                </React.Fragment>
+              }
+            />
+          </ListItem>
+          }
+
+
+
+            <ListItem alignItems="flex-start">
+            <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <CalculateIcon />
+              </ListItemIcon>
+            <ListItemText
+              primary="Totale"
+              secondary={
+                <React.Fragment>
+                  <Typography
+                    sx={{ display: 'block' }}
+                    component="span"
+                    variant="body2"
+                    color="text.primary"
+                    textAlign="right"
+                    margin="10px 0"
+                    fontWeight="bold"
+                    fontSize="1.4rem"
+                  >
+                    € {prezzo}
+                  </Typography>
+                </React.Fragment>
+              }
+            />
+          </ListItem>
+          </>
+          }
+          
 
           </List>
         </Drawer>
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          <DrawerHeader />
-        </Box>
+        
       </Box>
+      <VetreriaBox x={x} y={y} z={z} x2={x2} material={modelMaterials} hinge={hinge} />
+      </>
     );
   }
-

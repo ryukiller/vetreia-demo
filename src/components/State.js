@@ -8,9 +8,9 @@ export const State = proxy({
       roughness: 0.5,
     },
     scale: {
-      x: 1,
-      y: 1,
-      z: 1
+      x: 100,
+      y: 100,
+      z: 100
     },
     panelPos: {
         x: 1.35
