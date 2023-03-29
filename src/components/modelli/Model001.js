@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { Box, Plane, useTexture } from "@react-three/drei";
+import { Box, Plane, useTexture, useGLTF } from "@react-three/drei";
 import { useSpring, animated } from "@react-spring/three";
 import { useFrame } from "@react-three/fiber";
 import { GlassMaterial } from "../../components/Materials";
@@ -36,8 +36,21 @@ const Model001 = ({ dimensions, material, hinge }) => {
 
   const doorPositionY = doorHeight > 2 ? doorHeight / 2 : 1; //(doorHeight - 2) / 2  //doorHeight > 2 ? (doorHeight - 2) / 2 : 2;
 
+  const { nodes, materials } = useGLTF("./showerbot/untitled.gltf")
+  const mobile = useGLTF("./mobile/mobile.gltf")
+
+  console.log(mobile.nodes, mobile.materials)
+
   return (
     <group dispose={null}>
+{mobile.nodes.Material2020.children.map(function(object, i){
+  return <mesh key={i} position={[-1.6, .6, 2]} scale={[.7,.7,.7]} geometry={object.geometry} material={object.material}  />
+})}
+
+{nodes.showerbot.children.map(function(object, i){
+  return <mesh position={[-1.9, 1.4, -1.55]} scale={[.7,.7,.7]} geometry={object.geometry} material={object.material}  />
+})}
+      
       <animated.group position={[-1.76, 0.01, -0.97]} rotation={rotation}>
         <group position={[0.3, 0, 0]}>
         {/* Glass Door */}
