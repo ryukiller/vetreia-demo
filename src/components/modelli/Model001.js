@@ -38,20 +38,54 @@ const Model001 = ({ dimensions, material, hinge }) => {
 
   const { nodes, materials } = useGLTF("./showerbot/untitled.gltf")
   const mobile = useGLTF("./mobile/mobile.gltf")
+  const muroback = useGLTF("./muroback/muroback.gltf")
+  const wc = useGLTF("./water/water.gltf")
+  const rain = useGLTF("./rain/water.gltf")
+  const piatto = useGLTF("./piatto/piatto.gltf")
 
-  console.log(mobile.nodes, mobile.materials)
+  //console.log(piatto)
+
+  
 
   return (
     <group dispose={null}>
+{/* muro */}
+{muroback.nodes.muroback.children.map(function(object, i){
+  return <mesh key={i} position={[-2, 0.1, -2]} scale={[1,1.8,1]} geometry={object.geometry} material={object.material}  />
+})}
+{muroback.nodes.muroback.children.map(function(object, i){
+  return <mesh key={i} position={[-0.45, 0.1, -2]} scale={[1,1.8,1]} geometry={object.geometry} material={object.material}  />
+})}
+{muroback.nodes.muroback.children.map(function(object, i){
+  return <mesh key={i} position={[1.1, 0.1, -2]} scale={[1,1.8,1]} geometry={object.geometry} material={object.material}  />
+})}
+{muroback.nodes.muroback.children.map(function(object, i){
+  return <mesh key={i} position={[-2, 0.1, 0]} rotation={[0,Math.PI / 2,0]} scale={[1.3,1.8,1]} geometry={object.geometry} material={object.material}  />
+})}
+{/* mobile */}
 {mobile.nodes.Material2020.children.map(function(object, i){
   return <mesh key={i} position={[-1.6, .6, 2]} scale={[.7,.7,.7]} geometry={object.geometry} material={object.material}  />
 })}
-
+{/* doccia */}
 {nodes.showerbot.children.map(function(object, i){
-  return <mesh position={[-1.9, 1.4, -1.55]} scale={[.7,.7,.7]} geometry={object.geometry} material={object.material}  />
+  return <mesh key={i} position={[-1.94, 1.2, -1.55]} scale={[.7,.7,.7]} geometry={object.geometry} material={object.material}  />
+})}
+{rain.nodes.rain.children.map(function(object, i){
+  return <mesh key={i} rotation={[0,Math.PI / 2,0]} position={[-1.6, 2, -1.55]} scale={[2.5,2.5,2.5]} geometry={object.geometry} material={object.material}  />
+})}
+
+<group position={[-1.46 + (width / 2) - (width * 0.4), 0, -1.4]} scale={[width - (width * 0.33) ,1,1.4]}>
+{piatto.nodes.piatto.children.map(function(object, i){
+  return <mesh key={i} geometry={object.geometry} material={object.material}  /> //-1.9 + (width / 2)
+})}
+</group>
+
+{/* water */}
+{wc.nodes.water.children.map(function(object, i){
+  return <mesh key={i} position={[doorWidth - 2 / 2, 0.26, -1.9]}  scale={[1,1,1]} geometry={object.geometry} material={object.material}  />
 })}
       
-      <animated.group position={[-1.76, 0.01, -0.97]} rotation={rotation}>
+      <animated.group position={[-1.94, 0.03, -0.97]} rotation={rotation}>
         <group position={[0.3, 0, 0]}>
         {/* Glass Door */}
         <Box
@@ -106,30 +140,14 @@ const Model001 = ({ dimensions, material, hinge }) => {
       </animated.group>
 
       {/* collone right */}
-      <Box position={[doorWidth - 3.38 / 2, doorPositionY, -1.5]} args={[0.1, doorHeight + 0.1, 1.2]}>
-        <meshStandardMaterial
-          attach="material"
-          color="#fff"
-          map={wallTexture}
-          roughnessMap={wallTexture}
-          metalnessMap={wallTexture}
-          roughness={0.4}
-          metalness={0.6}
-        />
+      <Box position={[doorWidth - 3.8 / 2, doorPositionY, -1.5]} args={[0.1, doorHeight + 0.1, 1.2]} material={muroback.nodes.muroback.children[0].material}>
+        
       </Box>
 
       {/* collone left */}
-      <Box position={[-1.9, doorPositionY, -1]} args={[0.2, doorHeight + 0.1, 0.1]}>
-        <meshStandardMaterial
-          attach="material"
-          color="#fff"
-          map={wallTexture}
-          roughnessMap={wallTexture}
-          metalnessMap={wallTexture}
-          roughness={0.4}
-          metalness={0.6}
-        />
-      </Box>
+      {/* <Box position={[-1.9, doorPositionY, -1]} args={[0.2, doorHeight + 0.1, 0.1]} material={muroback.nodes.muroback.children[0].material}>
+
+      </Box> */}
 
       {/* left wall */}
       <Plane
