@@ -82,3 +82,15 @@ export const GlassMaterial = new THREE.MeshPhysicalMaterial({
       side: THREE.BackSide,
   });
 
+  export const GlassMaterial5 = new THREE.MeshPhysicalMaterial({
+    attach:"material",
+    color: new THREE.Color('#fff').convertSRGBToLinear(),
+    metalness:0,
+    roughness:0,
+    transmission:0.9,
+    clearcoat:1,
+    clearcoatRoughness:0,
+    reflectivity:1,
+    refractionRatio:0.98
+  });
+

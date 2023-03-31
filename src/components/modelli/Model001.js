@@ -1,8 +1,8 @@
-import React, { useState, useMemo, useEffect } from "react";
-import { Box, Plane, useTexture, useGLTF } from "@react-three/drei";
+import React, { useState, useMemo, useEffect, useRef } from "react";
+import { Box, Cylinder, Plane, useTexture, useGLTF, TransformControls } from "@react-three/drei";
 import { useSpring, animated } from "@react-spring/three";
 import { useFrame } from "@react-three/fiber";
-import { GlassMaterial } from "../../components/Materials";
+import { GlassMaterial5 } from "../../components/Materials";
 
 const Model001 = ({ dimensions, material, hinge }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -45,7 +45,34 @@ const Model001 = ({ dimensions, material, hinge }) => {
 
   //console.log(piatto)
 
-  
+  function renderFloor(z) {
+    let planes = [];
+      for(let i = 0; i < 10; i++) {
+        planes.push(<Plane key={i} args={[1, 1]}  position={[-2 + i, 0, z]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <meshStandardMaterial
+          attach="material"
+          color="#fff"
+          map={floorTexture}
+          roughnessMap={wallTexture}
+          metalnessMap={wallTexture}
+          roughness={0.4}
+          metalness={0.6}
+        />
+      </Plane>)
+      }
+
+      return planes;
+
+  }
+
+  function renderFloors() {
+    let floors = [];
+    for(let i = 0; i < 10; i++) {
+      floors.push(renderFloor(-1.6 + i))
+    }
+
+    return floors;
+  }
 
   return (
     <group dispose={null}>
@@ -74,11 +101,10 @@ const Model001 = ({ dimensions, material, hinge }) => {
   return <mesh key={i} rotation={[0,Math.PI / 2,0]} position={[-1.6, 2, -1.55]} scale={[2.5,2.5,2.5]} geometry={object.geometry} material={object.material}  />
 })}
 
-<group position={[-1.46 + (width / 2) - (width * 0.4), 0, -1.4]} scale={[width - (width * 0.33) ,1,1.4]}>
 {piatto.nodes.piatto.children.map(function(object, i){
-  return <mesh key={i} geometry={object.geometry} material={object.material}  /> //-1.9 + (width / 2)
+  return (<mesh position={[doorWidth - 5.4 / 2,0, -1.4]} scale={[1.5, 1, 1.1]} key={i} geometry={object.geometry} material={object.material} />)
+     //-1.9 + (width / 2)
 })}
-</group>
 
 {/* water */}
 {wc.nodes.water.children.map(function(object, i){
@@ -91,21 +117,25 @@ const Model001 = ({ dimensions, material, hinge }) => {
         <Box
           args={[doorWidth, doorHeight, 0.008]}
           position={[doorPositionX, doorPositionY, 0]}
-          material={material ? material : GlassMaterial}
+          material={material ? material : GlassMaterial5}
           onClick={toggleDoor}
           receiveShadow
           castShadow
         />
 
         {/* Pomello */}
-        <Box
-          args={[0.03, 0.03, 0.06]}
+        <Cylinder
+          args={[0.015, 0.015, 0.04, 32]}
+          rotation={[Math.PI / 2, 0, 0]}
           position={[doorWidth - 0.8 / 2, 1, 0.005]}
-          receiveShadow
-          castShadow
         >
-          <meshStandardMaterial attach="material" color="gold" />
-        </Box>
+          <meshStandardMaterial 
+          attach="material"
+          color="#ffffff"
+          metalness={1}
+          roughness={0}
+          />
+        </Cylinder>
 
         {/* Hinges */}
         <Box
@@ -114,7 +144,11 @@ const Model001 = ({ dimensions, material, hinge }) => {
           receiveShadow
           castShadow
         >
-          <meshStandardMaterial attach="material" color="silver" />
+          <meshStandardMaterial  
+        attach="material"
+        color="#ffffff"
+        metalness={1}
+        roughness={0} />
         </Box>
         {/* Middle Hinge */}
         {hinge &&
@@ -124,7 +158,11 @@ const Model001 = ({ dimensions, material, hinge }) => {
           receiveShadow
           castShadow
         >
-          <meshStandardMaterial attach="material" color="silver" />
+          <meshStandardMaterial  
+        attach="material"
+        color="#ffffff"
+        metalness={1}
+        roughness={0} />
         </Box>
         }
 
@@ -134,7 +172,11 @@ const Model001 = ({ dimensions, material, hinge }) => {
           receiveShadow
           castShadow
         >
-          <meshStandardMaterial attach="material" color="silver" />
+          <meshStandardMaterial  
+        attach="material"
+        color="#ffffff"
+        metalness={1}
+        roughness={0} />
         </Box>
         </group>
       </animated.group>
@@ -160,10 +202,8 @@ const Model001 = ({ dimensions, material, hinge }) => {
           attach="material"
           color="#fff"
           map={wallTexture}
-          roughnessMap={wallTexture}
-          metalnessMap={wallTexture}
-          roughness={0.4}
-          metalness={0.6}
+          roughness={0.5}
+          metalness={0.4}
         />
       </Plane>
 
@@ -178,27 +218,16 @@ const Model001 = ({ dimensions, material, hinge }) => {
           attach="material"
           color="#fff"
           map={wallTexture}
-          roughnessMap={wallTexture}
-          metalnessMap={wallTexture}
           roughness={0.4}
           metalness={0.6}
         />
       </Plane>
 
       {/* Floor Plane */}
-      <Plane args={[20, 20]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <meshStandardMaterial
-          attach="material"
-          color="#fff"
-          map={floorTexture}
-          roughnessMap={wallTexture}
-          metalnessMap={wallTexture}
-          roughness={0.4}
-          metalness={0.6}
-        />
-      </Plane>
+     {renderFloors()}
     </group>
   );
 };
 
 export default Model001;
+
