@@ -123,7 +123,7 @@ export default function Menu() {
 
   const [rangeval, setRangeval] = useState(null);
 
-  const [position, setPosition] = useState({ x: 0.4, y: 2, z: 1, x2: 1 });
+  const [position, setPosition] = useState({ x: 0.6, y: 2, z: 1, x2: 1 });
   const { x, y, z, x2 } = position;
 
   function valueLabelFormat(value) {
@@ -143,7 +143,7 @@ export default function Menu() {
     setNome(clickedMaterial.nome);
   };
 
-  const prezzo = base + (hinge ? 156 : 0) + roundToNearestTen(x * 100 - 40) + roundToNearestTen(y * 100 - 200);
+  const prezzo = base + (hinge ? 156 : 0) + roundToNearestTen(x * 100 - 60) + roundToNearestTen(y * 100 - 200);
 
   useEffect(() => {
     if (x >= 0.7 || y >= 2.2) {
@@ -158,7 +158,7 @@ const [inputYValue, setInputYValue] = useState(0);
 
 function updateValue(val, axis) {
   let value = parseInt(val, 10);
-  const limits = axis === "x" ? { min: 40, max: 100 } : { min: 200, max: 300 };
+  const limits = axis === "x" ? { min: 60, max: 100 } : { min: 200, max: 300 };
 
   if (value > limits.max) value = limits.max;
   if (value < limits.min) value = limits.min;
@@ -359,7 +359,7 @@ function roundToNearestTen(value) {
                     <Slider
                       value={position.x}
                       step={0.01}
-                      min={0.4}
+                      min={0.6}
                       max={1}
                       onChange={(e) => {
                         setInputXValue(Number(e.target.value * 100).toFixed(0));
@@ -379,7 +379,7 @@ function roundToNearestTen(value) {
                       InputLabelProps={{
                         shrink: true,
                       }}
-                      InputProps={{ inputProps: { min: 40, max: 100 } }}
+                      InputProps={{ inputProps: { min: 60, max: 100 } }}
                       onChange={(e) => {
                         setInputXValue(e.target.value);
                       }}
@@ -576,7 +576,7 @@ function roundToNearestTen(value) {
                   </ListItem>
                 )}
 
-                {x > 0.4 && (
+                {x > 0.6 && (
                   <ListItem alignItems="flex-start">
                     <ListItemIcon
                       sx={{
@@ -598,7 +598,7 @@ function roundToNearestTen(value) {
                             color="text.primary"
                             textAlign="right"
                           >
-                            + € {roundToNearestTen(x * 100 - 40).toFixed(2)}
+                            + € {roundToNearestTen(x * 100 - 60).toFixed(2)}
                           </Typography>
                         </React.Fragment>
                       }

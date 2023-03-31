@@ -5,7 +5,7 @@ global.THREE = THREE;
 export const GlassMaterial = new THREE.MeshPhysicalMaterial({
     //transmission:1,
     //thickness:0.4,
-    color: new THREE.Color('#000').convertSRGBToLinear(),
+    color: new THREE.Color('#f0f9ff').convertSRGBToLinear(),
     //roughness: 0,
     //clearcoat: .40,
     //clearcoatRoughness: 0.2,
@@ -15,17 +15,32 @@ export const GlassMaterial = new THREE.MeshPhysicalMaterial({
       clearcoat: .51,
       transparent: true,
       // transmission: .95,
-      opacity: .25,
+      opacity: .22,
       reflectivity: 0.2,
       refractionRatio: 0.3985,
-      ior: 0.9,
+      ior: 2.33,
       side: THREE.BackSide,
   });
+
+  // export const GlassMaterial = new THREE.MeshPhysicalMaterial({
+  //     transmission:1,
+  //     metalness: 0,
+  //     roughness: 0,
+  //     ior: 2.33,
+  //     color: new THREE.Color('#eee').convertSRGBToLinear(),
+  // });
+  // export const GlassMaterial2 = new THREE.MeshPhysicalMaterial({
+  //     transmission:1,
+  //     metalness: 0,
+  //     roughness: 0,
+  //     ior: 2.33,
+  //     color: new THREE.Color('#fff').convertSRGBToLinear(),
+  // });
 
   export const GlassMaterial2 = new THREE.MeshPhysicalMaterial({
     //transmission:1,
     //thickness:0.4,
-    color: new THREE.Color('#eee').convertSRGBToLinear(),
+    color: new THREE.Color('#fff').convertSRGBToLinear(),
     //roughness: 0,
     //clearcoat: .40,
     //clearcoatRoughness: 0.2,
@@ -35,10 +50,10 @@ export const GlassMaterial = new THREE.MeshPhysicalMaterial({
       clearcoat: .51,
       transparent: true,
       // transmission: .95,
-      opacity: .25,
+      opacity: .2,
       reflectivity: 0.2,
       refractionRatio: 0.3985,
-      ior: 0.9,
+      ior: 2.33,
       side: THREE.BackSide,
   });
 

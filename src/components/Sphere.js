@@ -22,7 +22,7 @@ function Sphere(props) {
     <mesh
       {...props}
       ref={ref}
-      scale={hovered ? 1.2 : 1}
+      scale={hovered ? 1.6 : 1.4}
       onClick={handleClick}
       onPointerOver={(event) => hover(true)}
       onPointerOut={(event) => hover(false)}
@@ -35,16 +35,14 @@ function Sphere(props) {
 export function Sfera({onClick}) {
     return (
       <>
-      <Canvas style={{height:"100px", background:"#fff"}} pixelRatio={[1, 1.5]} concurrent camera={{ fov: 30 }}>
+      <Canvas style={{height:"80px", marginBottom:"15px", background:"#eee"}} pixelRatio={[1, 1.5]} concurrent camera={{ fov: 30 }}>
       <Suspense fallback={null}>
         <ambientLight intensity={0.5} />
         <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
         <pointLight position={[-10, -10, -10]} />
-        <Sphere onClick={onClick} base="679" nome="linea azzurra" material={GlassMaterial} position={[-2.3, 0, 0]} />
-        <Sphere onClick={onClick} base="740" nome="linea extra chiaro" material={GlassMaterial2} position={[-0.75, 0, 0]} />
-        <Sphere onClick={onClick} base="761" nome="satinato linea azzurra" material={GlassMaterial3} position={[0.8, 0, 0]} />
-        <Sphere onClick={onClick} base="875" nome="satinato linea extra chiaro" material={GlassMaterial4} position={[2.3, 0, 0]} />
-        <Environment preset="apartment" />
+        <Sphere onClick={onClick} base="679" nome="linea azzurra" material={GlassMaterial} position={[-1, 0, 0]} />
+        <Sphere onClick={onClick} base="740" nome="linea extra chiaro" material={GlassMaterial2} position={[1, 0, 0]} />
+        <Environment files={'brown_photostudio_02_1k.hdr'} />
         </Suspense>
      </Canvas>
       </>

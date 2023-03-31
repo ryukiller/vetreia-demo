@@ -29,8 +29,8 @@ const Model001 = ({ dimensions, material, hinge }) => {
 
   const [width, height, depth] = dimensions;
 
-  const doorWidth = width ? width : 0.4;
-  const doorPositionX = (doorWidth - 0.4) / 2;
+  const doorWidth = width ? width : 0.6;
+  const doorPositionX = (doorWidth - 0.6) / 2;
 
   const doorHeight = height ? height : 2; //2 + height  //height ? height : 2;
 
