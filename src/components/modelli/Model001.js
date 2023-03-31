@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect, useRef } from "react";
 import { Box, Cylinder, Plane, useTexture, useGLTF, TransformControls } from "@react-three/drei";
 import { useSpring, animated } from "@react-spring/three";
 import { useFrame } from "@react-three/fiber";
-import { GlassMaterial5 } from "../../components/Materials";
+import { GlassMaterial } from "../../components/Materials";
 
 const Model001 = ({ dimensions, material, hinge }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -117,7 +117,7 @@ const Model001 = ({ dimensions, material, hinge }) => {
         <Box
           args={[doorWidth, doorHeight, 0.008]}
           position={[doorPositionX, doorPositionY, 0]}
-          material={material ? material : GlassMaterial5}
+          material={material ? material : GlassMaterial}
           onClick={toggleDoor}
           receiveShadow
           castShadow
