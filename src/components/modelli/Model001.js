@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, useRef } from "react";
-import { Box, Cylinder, Plane, useTexture, useGLTF, TransformControls } from "@react-three/drei";
+import { Box, Cylinder, Plane, Line, Html, useTexture, useGLTF, TransformControls } from "@react-three/drei";
 import { useSpring, animated } from "@react-spring/three";
 import { useFrame } from "@react-three/fiber";
 import { GlassMaterial } from "../../components/Materials";
@@ -37,9 +37,9 @@ const Model001 = ({ dimensions, material, hinge }) => {
   const doorPositionY = doorHeight > 2 ? doorHeight / 2 : 1; //(doorHeight - 2) / 2  //doorHeight > 2 ? (doorHeight - 2) / 2 : 2;
 
   const { nodes, materials } = useGLTF("./showerbot/untitled.gltf")
-  const mobile = useGLTF("./mobile/mobile.gltf")
-  const muroback = useGLTF("./muroback/muroback.gltf")
-  const wc = useGLTF("./water/water.gltf")
+  //const mobile = useGLTF("./mobile/mobile.gltf")
+  //const muroback = useGLTF("./muroback/muroback.gltf")
+  //const wc = useGLTF("./water/water.gltf")
   const rain = useGLTF("./rain/water.gltf")
   const piatto = useGLTF("./piatto/piatto.gltf")
 
@@ -74,10 +74,18 @@ const Model001 = ({ dimensions, material, hinge }) => {
     return floors;
   }
 
+  const dashMaterial = new THREE.LineDashedMaterial( {
+    color: 0xffffff,
+    linewidth: 1,
+    scale: 1,
+    dashSize: 3,
+    gapSize: 1,
+  } );
+
   return (
     <group dispose={null}>
 {/* muro */}
-{muroback.nodes.muroback.children.map(function(object, i){
+{/* {muroback.nodes.muroback.children.map(function(object, i){
   return <mesh key={i} position={[-2, 0.1, -2]} scale={[1,1.8,1]} geometry={object.geometry} material={object.material}  />
 })}
 {muroback.nodes.muroback.children.map(function(object, i){
@@ -88,11 +96,11 @@ const Model001 = ({ dimensions, material, hinge }) => {
 })}
 {muroback.nodes.muroback.children.map(function(object, i){
   return <mesh key={i} position={[-2, 0.1, 0]} rotation={[0,Math.PI / 2,0]} scale={[1.3,1.8,1]} geometry={object.geometry} material={object.material}  />
-})}
+})} */}
 {/* mobile */}
-{mobile.nodes.Material2020.children.map(function(object, i){
+{/* {mobile.nodes.Material2020.children.map(function(object, i){
   return <mesh key={i} position={[-1.6, .6, 2]} scale={[.7,.7,.7]} geometry={object.geometry} material={object.material}  />
-})}
+})} */}
 {/* doccia */}
 {nodes.showerbot.children.map(function(object, i){
   return <mesh key={i} position={[-1.94, 1.2, -1.55]} scale={[.7,.7,.7]} geometry={object.geometry} material={object.material}  />
@@ -107,12 +115,74 @@ const Model001 = ({ dimensions, material, hinge }) => {
 })}
 
 {/* water */}
-{wc.nodes.water.children.map(function(object, i){
+{/* {wc.nodes.water.children.map(function(object, i){
   return <mesh key={i} position={[doorWidth - 2 / 2, 0.26, -1.9]}  scale={[1,1,1]} geometry={object.geometry} material={object.material}  />
-})}
+})} */}
       
       <animated.group position={[-1.94, 0.03, -0.97]} rotation={rotation}>
         <group position={[0.3, 0, 0]}>
+        <group>
+        <Line
+         points={[[0, 0, 0], [doorWidth, 0, 0]]}
+         position={[doorPositionX - (doorWidth / 2), doorPositionY * 2.08, 0]}
+         color={'white'}
+         lineWidth={0.7}
+         dashed={true}
+         scale={1}
+         dashSize={.03}
+         gapSize={.02}
+        />
+        <mesh position={[doorWidth -0.3, doorPositionY * 2.08, 0]}>
+        <sphereGeometry attach="geometry" args={[0.02, 32, 32]}   />
+        </mesh>
+        <mesh position={[-0.3, doorPositionY * 2.08, 0]}>
+        <sphereGeometry attach="geometry" args={[0.02, 32, 32]}   />
+        </mesh>
+         <Html position={[doorPositionX - 0.1, doorPositionY * 2.2, 0]}  >
+        <div
+          style={{
+            color: "#fff",
+            fontWeight: 'bold',
+            fontSize: '12px',
+            backgroundColor: '#000',
+            borderRadius: '3px',
+            padding: '2px 5px',
+            }}
+            >
+            {(doorWidth * 100).toFixed(0)}CM
+            </div>
+            </Html>
+        <Line
+         points={[[0, 0, 0], [0, doorHeight, 0]]}
+         position={[doorWidth - 0.15, 0, 0]}
+         color={'white'}
+         lineWidth={0.5}
+         dashed={true}
+         scale={1}
+         dashSize={.03}
+         gapSize={.02}
+        />
+        <mesh position={[doorWidth - 0.15, doorPositionY * 2, 0]}>
+        <sphereGeometry attach="geometry" args={[0.02, 32, 32]}   />
+        </mesh>
+        <mesh position={[doorWidth - 0.15, 0, 0]}>
+        <sphereGeometry attach="geometry" args={[0.02, 32, 32]}   />
+        </mesh>
+        <Html position={[doorWidth - 0.12, doorHeight / 2, 0]}  >
+        <div
+          style={{
+            color: "#fff",
+            fontWeight: 'bold',
+            fontSize: '12px',
+            backgroundColor: '#000',
+            borderRadius: '3px',
+            padding: '2px 5px',
+            }}
+            >
+            {(doorHeight * 100).toFixed(0)}CM
+            </div>
+            </Html>
+        </group>
         {/* Glass Door */}
         <Box
           args={[doorWidth, doorHeight, 0.008]}
@@ -182,7 +252,7 @@ const Model001 = ({ dimensions, material, hinge }) => {
       </animated.group>
 
       {/* collone right */}
-      <Box position={[doorWidth - 3.8 / 2, doorPositionY, -1.5]} args={[0.1, doorHeight + 0.1, 1.2]} material={muroback.nodes.muroback.children[0].material}>
+      <Box position={[doorWidth - 3.8 / 2, doorPositionY, -1.5]} args={[0.1, doorHeight + 0.1, 1.2]} material={piatto.nodes.piatto.children[0].material}>
         
       </Box>
 

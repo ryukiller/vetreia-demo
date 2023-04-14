@@ -17,7 +17,7 @@ return (
         <Environment files={'brown_photostudio_02_1k.hdr'} />
         <ContactShadows rotation-x={Math.PI / 2} position={[0, -0.8, 0]} opacity={0.25} width={10} height={10} blur={2} far={1} />
       </Suspense>
-      <OrbitControls minDistance={.5} maxDistance={7} minAzimuthAngle={0.1} maxAzimuthAngle={Math.PI / 2-0.05} maxPolarAngle={Math.PI / 2-0.05} minPolarAngle={0.98}  target={[-0.5,1.45,0]}  enableZoom={true} enablePan={true} />
+      <OrbitControls minDistance={.5} maxDistance={7} minAzimuthAngle={0.1} maxAzimuthAngle={Math.PI / 2-0.05} maxPolarAngle={Math.PI / 2-0.05} minPolarAngle={0.98}  target={[-0.5,1.75,0]}  enableZoom={true} enablePan={true} />
     </Canvas>
   </>
 )
