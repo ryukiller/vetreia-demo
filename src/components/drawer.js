@@ -30,6 +30,10 @@ import Chip from "@mui/material/Chip";
 import { ListItem } from "@mui/material";
 import CalculateIcon from "@mui/icons-material/Calculate";
 
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+
 /*<Slider value={State.scale["x"]}
                       step={0.001}
                       min={.8}
@@ -43,6 +47,21 @@ import CalculateIcon from "@mui/icons-material/Calculate";
                       defaultValue={State.scale["x"]} aria-label="Default" valueLabelDisplay="auto" sx={{ display: open ? "block" : "none" }} />*/
 
 const drawerWidth = 240;
+
+const modelList = [
+  {
+    title: "Virgo",
+    img: "/anteprime/ANGOLARE/1B-APERTURA-DX.svg",
+    value: "virgo",
+    prezzoBase: "€ 679",
+  },
+  {
+    title: "Fenix",
+    img: "/anteprime/ANGOLARE/1B-APERTURA-SX.svg",
+    value: "fenix",
+    prezzoBase: "€ 679",
+  },
+];
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -135,7 +154,6 @@ export default function Menu() {
   const [nome, setNome] = useState("linea azzurra");
   const [hinge, setHinge] = useState(false);
   const [modelMaterials, setModelMaterials] = useState();
- 
 
   const handleSphereClick = (clickedMaterial) => {
     setModelMaterials(clickedMaterial.material);
@@ -143,7 +161,11 @@ export default function Menu() {
     setNome(clickedMaterial.nome);
   };
 
-  const prezzo = base + (hinge ? 156 : 0) + roundToNearestTen(x * 100 - 60) + roundToNearestTen(y * 100 - 200);
+  const prezzo =
+    base +
+    (hinge ? 156 : 0) +
+    roundToNearestTen(x * 100 - 60) +
+    roundToNearestTen(y * 100 - 200);
 
   useEffect(() => {
     if (x >= 0.7 || y >= 2.2) {
@@ -153,44 +175,56 @@ export default function Menu() {
     }
   }, [x, y]);
 
-const [inputXValue, setInputXValue] = useState(0);
-const [inputYValue, setInputYValue] = useState(0);
+  const [inputXValue, setInputXValue] = useState(0);
+  const [inputYValue, setInputYValue] = useState(0);
 
-function updateValue(val, axis) {
-  let value = parseInt(val, 10);
-  const limits = axis === "x" ? { min: 60, max: 100 } : { min: 200, max: 300 };
+  function updateValue(val, axis) {
+    let value = parseInt(val, 10);
+    const limits =
+      axis === "x" ? { min: 60, max: 100 } : { min: 200, max: 300 };
 
-  if (value > limits.max) value = limits.max;
-  if (value < limits.min) value = limits.min;
+    if (value > limits.max) value = limits.max;
+    if (value < limits.min) value = limits.min;
 
-  const setInputValue = axis === "x" ? setInputXValue : setInputYValue;
-  setInputValue(value);
+    const setInputValue = axis === "x" ? setInputXValue : setInputYValue;
+    setInputValue(value);
 
-  let cm = value / 100;
-  setPosition({ ...position, [axis]: cm });
-}
+    let cm = value / 100;
+    setPosition({ ...position, [axis]: cm });
+  }
 
-useEffect(() => {
-  const timeout = setTimeout(() => {
-    updateValue(inputXValue, "x");
-  }, 800);
-  return () => {
-    clearTimeout(timeout);
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      updateValue(inputXValue, "x");
+    }, 800);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [inputXValue]);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      updateValue(inputYValue, "y");
+    }, 800);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [inputYValue]);
+
+  function roundToNearestTen(value) {
+    return Math.round(value / 10) * 10;
+  }
+  const [model, setModel] = useState("virgo");
+
+  const handleModelChange = (event) => {
+    setModel(event.target.value);
   };
-}, [inputXValue]);
 
-useEffect(() => {
-  const timeout = setTimeout(() => {
-    updateValue(inputYValue, "y");
-  }, 800);
-  return () => {
-    clearTimeout(timeout);
+  const [doorPosition, setDoorPosition] = useState("left");
+
+  const handledoorPositionChange = (event) => {
+    setDoorPosition(event.target.value);
   };
-}, [inputYValue]);
-
-function roundToNearestTen(value) {
-  return Math.round(value / 10) * 10;
-}
 
   return (
     <>
@@ -250,6 +284,74 @@ function roundToNearestTen(value) {
           <List>
             <ListItemButton
               onClick={handleDrawerOpen}
+              key={"materriale1"}
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? "initial" : "center",
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
+                }}
+              >
+                <GradientIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary={"Modello"}
+                sx={{ opacity: open ? 1 : 0 }}
+              />
+            </ListItemButton>
+            {open ? (
+              <React.Fragment>
+                <Select
+                  labelId="model-select"
+                  id="select-model"
+                  value={model}
+                  label="Modello"
+                  onChange={handleModelChange}
+                >
+                  {modelList.map((m, i) => {
+                    return (
+                      <MenuItem key={i} value={m.value}>
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "start",
+                            alignItems: "center",
+                          }}
+                        >
+                          <img
+                            style={{
+                              width: "25%",
+                            }}
+                            src={m.img}
+                            alt={m.title}
+                            loading="lazy"
+                          />
+                          <div style={{ marginLeft: "10px" }}>
+                            <h3 style={{ marginTop: "0", marginBottom: "5px" }}>
+                              {m.title}
+                            </h3>
+                            <p style={{ marginTop: "0", marginBottom: "5px" }}>
+                              Prezzo Base: {m.prezzoBase}
+                            </p>
+                          </div>
+                        </div>
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </React.Fragment>
+            ) : (
+              ""
+            )}
+            <ListItemButton
+              onClick={handleDrawerOpen}
               key={"materriale"}
               sx={{
                 minHeight: 48,
@@ -272,6 +374,76 @@ function roundToNearestTen(value) {
               />
             </ListItemButton>
             {open ? <Sfera onClick={handleSphereClick} /> : ""}
+
+            {open && model == "virgo" ? (
+              <React.Fragment>
+                <Divider textAlign="left">
+                  <Chip
+                    label="Posizione Porta"
+                    sx={{ display: open ? "flex" : "none" }}
+                  />
+                </Divider>
+                <Select
+                  labelId="model-select"
+                  id="select-door-pos"
+                  value={doorPosition}
+                  label="Modello"
+                  onChange={handledoorPositionChange}
+                  style={{ margin: "10px 0", border: "none" }}
+                >
+                  <MenuItem key="doorleft" value="left">
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "start",
+                        alignItems: "center",
+                      }}
+                    >
+                      <img
+                        style={{
+                          width: "25%",
+                        }}
+                        src="/anteprime/ANGOLARE/1B-APERTURA-SX.svg"
+                        alt="sinistra"
+                        loading="lazy"
+                      />
+                      <div style={{ marginLeft: "10px" }}>
+                        <h3 style={{ marginTop: "0", marginBottom: "5px" }}>
+                          Sinistra
+                        </h3>
+                      </div>
+                    </div>
+                  </MenuItem>
+                  <MenuItem key="doorright" value="right">
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "start",
+                        alignItems: "center",
+                      }}
+                    >
+                      <img
+                        style={{
+                          width: "25%",
+                        }}
+                        src="/anteprime/ANGOLARE/1B-APERTURA-DX.svg"
+                        alt="sinistra"
+                        loading="lazy"
+                      />
+                      <div style={{ marginLeft: "10px" }}>
+                        <h3 style={{ marginTop: "0", marginBottom: "5px" }}>
+                          Destra
+                        </h3>
+                      </div>
+                    </div>
+                  </MenuItem>
+                </Select>
+              </React.Fragment>
+            ) : (
+              ""
+            )}
             <Divider textAlign="left">
               <Chip label="Porta" sx={{ display: open ? "flex" : "none" }} />
             </Divider>
@@ -691,6 +863,8 @@ function roundToNearestTen(value) {
         x2={x2}
         material={modelMaterials}
         hinge={hinge}
+        model={model}
+        doorPosition={doorPosition}
       />
     </>
   );
