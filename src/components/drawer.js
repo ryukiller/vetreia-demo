@@ -231,35 +231,45 @@ export default function Menu() {
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
         <AppBar style={{ background: "#000" }} position="fixed" open={open}>
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              sx={{
-                marginRight: 5,
-                ...(open && { display: "none" }),
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
+          <Toolbar style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+            <div style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start", width: "100%" }}>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={handleDrawerOpen}
+                edge="start"
+                sx={{
+                  marginRight: 5,
+                  ...(open && { display: "none" }),
+                }}
+              >
+                <MenuIcon />
+              </IconButton>
+              <img
+                style={{
+                  width: "175px",
+                  padding: "0 20px 0 0",
+                  margin: "0 20px 0 0",
+                  filter: "invert(1)",
+                  borderRight: "2px solid #000",
+                  display: open ? "none" : "block",
+                }}
+                src={"/logo2.png"}
+                alt={"Vetreria Re"}
+                loading="lazy"
+              />
+              <Typography variant="h6" noWrap component="div">
+                Box Doccia 001 - prezzo: € {prezzo}
+              </Typography>
+            </div>
             <img
               style={{
-                width: "175px",
-                padding: "0 20px 0 0",
-                margin: "0 20px 0 0",
-                filter: "invert(1)",
-                borderRight: "2px solid #000",
-                display: open ? "none" : "block",
+                width: "100px",
+                padding: "10px"
               }}
-              src={"/logo2.png"}
+              src={"/logo-new.png"}
               alt={"Vetreria Re"}
-              loading="lazy"
-            />
-            <Typography variant="h6" noWrap component="div">
-              Box Doccia 001 - prezzo: € {prezzo}
-            </Typography>
+              loading="lazy" />
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>

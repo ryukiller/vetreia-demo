@@ -56,7 +56,11 @@ const Virgo = ({ dimensions, material, hinge, ...props }) => {
   const rain = useGLTF("./rain/water.gltf");
   const piatto = useGLTF("./piatto/piatto.gltf");
 
-  const positionIfRight = props.doorPosition == "left" ? [0, 0, 0] : [-1, 0, 0];
+  const positionIfRight = props.doorPosition == "left" ? [0, 0, 0] : [-2.7, 0, -0.04];
+
+  const vetroLateraleArgs = [0.008, doorHeight + 0.06, 0.8]
+  const vetroLateralePosition = props.doorPosition == "left" ? [doorWidth - 3.86 / 2, doorPositionY, -1.8] : [-1.68, doorPositionY, doorWidth - 3.94 / 2]
+  const vetroLateraleRotation = props.doorPosition == "left" ? [0, 0, 0] : [0, Math.PI / 2, 0]
 
   //console.log(piatto)
 
@@ -101,19 +105,33 @@ const Virgo = ({ dimensions, material, hinge, ...props }) => {
     gapSize: 1,
   });
 
-  const materialProps = useControls({
-    thickness: { value: 5, min: 0, max: 20 },
-    roughness: { value: 0, min: 0, max: 1, step: 0.1 },
-    clearcoat: { value: 1, min: 0, max: 1, step: 0.1 },
-    clearcoatRoughness: { value: 0, min: 0, max: 1, step: 0.1 },
-    transmission: { value: 1, min: 0.9, max: 1, step: 0.01 },
-    ior: { value: 1.25, min: 1, max: 2.3, step: 0.05 },
-    envMapIntensity: { value: 25, min: 0, max: 100, step: 1 },
+  // const materialProps = useControls({
+  //   thickness: { value: 0, min: 0, max: 20 },
+  //   roughness: { value: 1, min: 0, max: 1, step: 0.1 },
+  //   clearcoat: { value: 0, min: 0, max: 1, step: 0.1 },
+  //   clearcoatRoughness: { value: 0, min: 0, max: 1, step: 0.1 },
+  //   transmission: { value: 1, min: 0.9, max: 1, step: 0.01 },
+  //   ior: { value: 1, min: 1, max: 2.3, step: 0.05 },
+  //   envMapIntensity: { value: 50, min: 0, max: 100, step: 1 },
+  //   color: "#ffffff",
+  //   attenuationTint: "#ffe79e",
+  //   attenuationDistance: { value: 0.20, min: 0, max: 1 },
+  //   opacity: { value: 0.20, min: 0, max: 1 },
+  // });
+
+  const materialProps = {
+    thickness: 0,
+    roughness: 1,
+    clearcoat: 0,
+    clearcoatRoughness: 0,
+    transmission: 1,
+    ior: 1,
+    envMapIntensity: 50,
     color: "#ffffff",
     attenuationTint: "#ffe79e",
-    attenuationDistance: { value: 0, min: 0, max: 1 },
-    opacity: { value: 0.22, min: 0, max: 1 },
-  });
+    attenuationDistance: 0.2,
+    opacity: 0.2,
+  }
 
   return (
     <group dispose={null}>
@@ -339,8 +357,9 @@ const Virgo = ({ dimensions, material, hinge, ...props }) => {
 
       {/* vetro laterale */}
       <Box
-        args={[0.008, doorHeight + 0.1, 0.8]}
-        position={[doorWidth - 3.8 / 2, doorPositionY, -1.8]}
+        args={vetroLateraleArgs}
+        position={vetroLateralePosition}
+        rotation={vetroLateraleRotation}
         material={material ? material : GlassMaterial}
         receiveShadow
         castShadow
