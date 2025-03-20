@@ -7,7 +7,7 @@ import {
   Html,
   useTexture,
   useGLTF,
-  TransformControls,
+  TransformControls
 } from "@react-three/drei";
 import { useSpring, animated } from "@react-spring/three";
 import { useFrame } from "@react-three/fiber";
@@ -74,12 +74,15 @@ const Virgo = ({ dimensions, material, hinge, ...props }) => {
           position={[-2 + i, 0, z]}
           rotation={[-Math.PI / 2, 0, 0]}
           receiveShadow
+          castShadow
         >
           <meshStandardMaterial
             attach="material"
-            color="#a1a1a1"
-            roughness={0.4}
+            color={"#484850"}
             metalness={0.6}
+            roughness={0}
+            envMapIntensity={0.2}
+          //{...floorMaterialProps}
           />
         </Plane>
       );
@@ -105,33 +108,33 @@ const Virgo = ({ dimensions, material, hinge, ...props }) => {
     gapSize: 1,
   });
 
-  // const materialProps = useControls({
-  //   thickness: { value: 0, min: 0, max: 20 },
-  //   roughness: { value: 1, min: 0, max: 1, step: 0.1 },
-  //   clearcoat: { value: 0, min: 0, max: 1, step: 0.1 },
-  //   clearcoatRoughness: { value: 0, min: 0, max: 1, step: 0.1 },
-  //   transmission: { value: 1, min: 0.9, max: 1, step: 0.01 },
-  //   ior: { value: 1, min: 1, max: 2.3, step: 0.05 },
-  //   envMapIntensity: { value: 50, min: 0, max: 100, step: 1 },
-  //   color: "#ffffff",
-  //   attenuationTint: "#ffe79e",
-  //   attenuationDistance: { value: 0.20, min: 0, max: 1 },
-  //   opacity: { value: 0.20, min: 0, max: 1 },
-  // });
-
-  const materialProps = {
-    thickness: 0,
-    roughness: 1,
-    clearcoat: 0,
-    clearcoatRoughness: 0,
-    transmission: 1,
-    ior: 1,
-    envMapIntensity: 50,
-    color: "#ffffff",
+  const materialProps = useControls({
+    thickness: { value: 0, min: 0, max: 20 },
+    roughness: { value: 1, min: 0, max: 1, step: 0.1 },
+    clearcoat: { value: 1, min: 0, max: 1, step: 0.1 },
+    clearcoatRoughness: { value: 1, min: 0, max: 1, step: 0.1 },
+    transmission: { value: 1, min: 0, max: 1, step: 0.01 },
+    ior: { value: 1, min: 1, max: 2.3, step: 0.05 },
+    envMapIntensity: { value: 1, min: 0, max: 100, step: 1 },
+    color: "#faffff",
     attenuationTint: "#ffe79e",
-    attenuationDistance: 0.2,
-    opacity: 0.2,
-  }
+    attenuationDistance: { value: 0.20, min: 0, max: 1 },
+    opacity: { value: 0.20, min: 0, max: 1 },
+  });
+
+  // const materialProps = {
+  //   thickness: 0,
+  //   roughness: 1,
+  //   clearcoat: 1,
+  //   clearcoatRoughness: 1,
+  //   transmission: 1,
+  //   ior: 1,
+  //   envMapIntensity: 1,
+  //   color: "#faffff",
+  //   attenuationTint: "#ffffff",
+  //   attenuationDistance: 0.2,
+  //   opacity: 0.2,
+  // }
 
   return (
     <group dispose={null}>
@@ -392,7 +395,7 @@ const Virgo = ({ dimensions, material, hinge, ...props }) => {
       >
         <meshStandardMaterial
           attach="material"
-          color="#c1c1c1"
+          color="#D0E2ED"
           roughness={0.5}
           metalness={0.4}
         />
@@ -407,7 +410,7 @@ const Virgo = ({ dimensions, material, hinge, ...props }) => {
       >
         <meshStandardMaterial
           attach="material"
-          color="#c1c1c1"
+          color="#D0E2ED"
           roughness={0.4}
           metalness={0.6}
         />

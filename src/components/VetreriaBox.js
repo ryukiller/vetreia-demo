@@ -33,10 +33,10 @@ export default function VetreriaBox({
         doorPosition: props.doorPosition,
       },
     },
-    fenix: {
-      component: Model002,
-      props: { dimensions: [x, y, z], material: material, hinge: hinge },
-    },
+    // fenix: {
+    //   component: Model002,
+    //   props: { dimensions: [x, y, z], material: material, hinge: hinge },
+    // },
   };
 
   const { component: SelectedModel, props: modelProps } =

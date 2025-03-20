@@ -55,12 +55,12 @@ const modelList = [
     value: "virgo",
     prezzoBase: "€ 679",
   },
-  {
-    title: "Fenix",
-    img: "/anteprime/ANGOLARE/1B-APERTURA-SX.svg",
-    value: "fenix",
-    prezzoBase: "€ 679",
-  },
+  // {
+  //   title: "Fenix",
+  //   img: "/anteprime/ANGOLARE/1B-APERTURA-SX.svg",
+  //   value: "fenix",
+  //   prezzoBase: "€ 679",
+  // },
 ];
 
 const openedMixin = (theme) => ({
@@ -247,25 +247,27 @@ export default function Menu() {
               </IconButton>
               <img
                 style={{
-                  width: "175px",
+                  width: "100px",
                   padding: "0 20px 0 0",
                   margin: "0 20px 0 0",
-                  filter: "invert(1)",
+                  //filter: "invert(1)",
                   borderRight: "2px solid #000",
                   display: open ? "none" : "block",
                 }}
-                src={"/logo2.png"}
+                src={"/logo-new.png"}
                 alt={"Vetreria Re"}
                 loading="lazy"
               />
               <Typography variant="h6" noWrap component="div">
-                Box Doccia 001 - prezzo: € {prezzo}
+                {/* ricordarsi di impostare in base alla selezione */}
+                {modelList[0].title} - prezzo: € {prezzo}
               </Typography>
             </div>
             <img
               style={{
                 width: "100px",
-                padding: "10px"
+                padding: "10px",
+                display: "none"
               }}
               src={"/logo-new.png"}
               alt={"Vetreria Re"}
@@ -276,13 +278,14 @@ export default function Menu() {
           <DrawerHeader>
             <img
               style={{
-                width: "75%",
+                width: "100px",
                 padding: "0px 15px 0px 0px",
                 borderRight: "2px solid rgb(0, 0, 0)",
                 display: "block",
-                marginRight: "8px",
+                marginRight: "20px",
+                filter: "invert(1)",
               }}
-              src={"/logo2.png"}
+              src={"/logo-new.png"}
               alt={"Vetreria Re"}
               loading="lazy"
             />
